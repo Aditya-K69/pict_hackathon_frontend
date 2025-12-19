@@ -1,0 +1,1 @@
+This is smart insurance claim process project 
