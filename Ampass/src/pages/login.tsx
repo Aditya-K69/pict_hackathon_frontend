@@ -1,7 +1,17 @@
 import { useState } from "react";
 
 export default function Login() {
-  const [accountType, setAccountType] = useState("user"); 
+  const [accountType, setAccountType] = useState<string>("user");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    
+    if (accountType === "user") {
+      window.location.href = "/user-dashboard";
+    } else {
+      window.location.href = "/company-dashboard";
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#f6f7f8]">
@@ -47,7 +57,7 @@ export default function Login() {
         </div>
 
         {/* Form */}
-        <form className="flex flex-col gap-2 mt-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 mt-4">
 
           {/* User fields */}
           {accountType === "user" && (

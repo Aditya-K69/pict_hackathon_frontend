@@ -1,6 +1,9 @@
 
-export default function Dashboard() {
 
+export default function Dashboard() {
+ const handleNavigateToFileClaim = (): void => {
+    window.location.href = '/FileClaim';
+  };
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f7f8]">
       {/* Header */}
@@ -24,9 +27,12 @@ export default function Dashboard() {
             <h1 className="text-black text-5xl font-bold">Claims Overview</h1>
             <p className="text-gray-500 text-lg mt-2">Track and manage your insurance claims securely.</p>
         </div>
-        <button className="bg-blue-500 text-white rounded-xl p-2 h-[50px] text-base font-semibold">
-            + File New Claim
-        </button>
+     <button 
+        onClick={handleNavigateToFileClaim}
+        className="bg-blue-500 text-white rounded-xl p-2 h-[50px] text-base font-semibold"
+      >
+        + File New Claim
+      </button>
       </div>
 
       <div className="flex flex-row gap-10 p-6">
