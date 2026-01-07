@@ -2,7 +2,48 @@ import { useState } from "react";
 import api from "../lib/api";
 
 export default function Login() {
-  const [accountType, setAccountType] = useState("user"); 
+  const [accountType, setAccountType] = useState("user");
+
+  // user fields
+  const [phone, setPhone] = useState("");
+  const [pin, setPin] = useState("");
+
+  // company fields
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function handleSubmit(e:any) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const endpoint =
+      accountType === "user"
+        ? "/users/login"
+        : "/companies/login";
+
+    const payload =
+      accountType === "user"
+        ? { phone_number: phone, pin }
+        : { company_email: email, password };
+
+    try {
+      const res = await api.post(endpoint, payload);
+      localStorage.setItem("access_token", res.data.access_token);
+
+      
+       window.location.href = "/user-dashboard";
+    } catch (err:any) {
+      setError(
+        err.response?.data?.message || "Login failed"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#f6f7f8]">
@@ -35,10 +76,8 @@ export default function Login() {
           </button>
         </div>
 
-        {/* Form */}
-        <form className="flex flex-col gap-2 mt-4">
-
-          {/* User fields */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          {/* USER LOGIN */}
           {accountType === "user" && (
             <>
               <label className="font-medium">Mobile Number</label>
