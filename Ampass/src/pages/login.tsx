@@ -8,7 +8,7 @@ export default function Login() {
       {/* Header */}
       <div className="fixed top-0 w-full h-[60px] bg-white flex items-center justify-between px-8">
         <div className="flex items-center gap-4">
-          <img src="vite.svg" alt="Vite Logo" className="h-8" />
+          <img src="Claimit.jpeg" alt="Claimit Logo" className="h-8" />
           <p className="text-black text-base font-semibold">Claimit</p>
         </div>
         <div className="flex gap-4">
@@ -55,7 +55,7 @@ export default function Login() {
             <>
               <span className="text-base font-semibold text-black">Mobile Number</span>
               <input
-                type="number"
+                type="text"
                 placeholder="Eg +91 1234567890"
                 className="border border-gray-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
@@ -74,11 +74,13 @@ export default function Login() {
           {/* Company fields */}
           {accountType === "company" && (
             <>
+            <span className="text-base font-semibold text-black">Company Email</span>
               <input
                 type="text"
-                placeholder="Company Name"
+                placeholder="name@company.com"
                 className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <span className="text-base font-semibold text-black">Password</span>
               <input
                 type="password"
                 placeholder="Admin Password"
