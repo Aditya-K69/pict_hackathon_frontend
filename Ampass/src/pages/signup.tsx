@@ -1,42 +1,55 @@
 import { useState } from "react";
 import api from "../lib/api";
 
-export default function Login() {
+export default function Signup() {
   const [accountType, setAccountType] = useState("user");
 
   // user fields
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
 
   // company fields
-  const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   async function handleSubmit(e:any) {
     e.preventDefault();
     setError(null);
+    setSuccess(false);
     setLoading(true);
 
     const endpoint =
       accountType === "user"
-        ? "/users/login"
-        : "/companies/login";
+        ? "/users/register"
+        : "/companies/register";
 
     const payload =
       accountType === "user"
-        ? { phone_number: phone, pin }
-        : { company_email: email, password };
+        ? {
+            name,
+            phone_number: phone,    
+            email,
+            pin,
+          }
+        : {
+            company_name: companyName,
+            company_email: companyEmail,
+            password,
+          };
 
     try {
-      const res = await api.post(endpoint, payload);
-      localStorage.setItem("access_token", res.data.access_token);
-      window.location.href="/user-dashboard"
+      await api.post(endpoint, payload);
+      setSuccess(true);
     } catch (err:any) {
       setError(
-        err.response?.data?.message || "Login failed"
+        err.response?.data?.message || "Registration failed"
       );
     } finally {
       setLoading(false);
@@ -46,12 +59,12 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#f6f7f8]">
       <div className="bg-white w-[450px] rounded-2xl shadow-lg p-6 mt-20">
-        <h1 className="text-2xl font-semibold text-center">Welcome Back</h1>
+        <h1 className="text-2xl font-semibold text-center">Create Account</h1>
         <p className="text-gray-400 text-center mb-6">
-          Manage your claims and policies securely
+          Get started with Clamit
         </p>
 
-        {/* Account type toggle */}
+        {/* Toggle */}
         <div className="relative flex bg-gray-200 rounded-lg p-1 w-full py-3 px-2 mb-6">
           <div
             className={`absolute top-1 w-[195px] h-10 bg-white rounded-lg transition-all duration-300 ${
@@ -75,9 +88,17 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          {/* USER LOGIN */}
+          {/* USER SIGNUP */}
           {accountType === "user" && (
             <>
+              <label className="font-medium">Full Name</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="border rounded-lg p-2"
+              />
+
               <label className="font-medium">Mobile Number</label>
               <input
                 type="tel"
@@ -90,16 +111,16 @@ export default function Login() {
                 className="border rounded-lg p-2"
               />
 
-              <div className="flex justify-between items-center">
-                <label className="font-medium">Security PIN</label>
-                <button
-                  type="button"
-                  className="text-blue-500 text-sm"
-                >
-                  Forgot PIN?
-                </button>
-              </div>
+              <label className="font-medium">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="border rounded-lg p-2"
+              />
 
+              <label className="font-medium">Security PIN</label>
               <input
                 type="password"
                 value={pin}
@@ -111,28 +132,27 @@ export default function Login() {
             </>
           )}
 
-          {/* COMPANY LOGIN */}
+          {/* COMPANY SIGNUP */}
           {accountType === "company" && (
             <>
-              <label className="font-medium">Company Email</label>
+              <label className="font-medium">Company Name</label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
                 required
                 className="border rounded-lg p-2"
               />
 
-              <div className="flex justify-between items-center">
-                <label className="font-medium">Password</label>
-                <button
-                  type="button"
-                  className="text-blue-500 text-sm"
-                >
-                  Forgot Password?
-                </button>
-              </div>
+              <label className="font-medium">Company Email</label>
+              <input
+                type="email"
+                value={companyEmail}
+                onChange={(e) => setCompanyEmail(e.target.value)}
+                required
+                className="border rounded-lg p-2"
+              />
 
+              <label className="font-medium">Password</label>
               <input
                 type="password"
                 value={password}
@@ -147,27 +167,20 @@ export default function Login() {
             <p className="text-red-500 text-sm mt-2">{error}</p>
           )}
 
+          {success && (
+            <p className="text-green-600 text-sm mt-2">
+              Account created successfully. You can log in now.
+            </p>
+          )}
+
           <button
             type="submit"
             disabled={loading}
             className="bg-blue-500 text-white rounded-lg p-2 mt-4 disabled:opacity-60"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Creating account..." : "Create Account"}
           </button>
         </form>
-
-        <div className="flex items-center justify-center gap-2 mt-6">
-          <hr className="w-32" />
-          <span className="text-gray-400 text-sm">OR</span>
-          <hr className="w-32" />
-        </div>
-
-        <button
-          type="button"
-          className="w-full border rounded-lg p-2 mt-4 text-gray-600"
-        >
-          Create Account
-        </button>
       </div>
     </div>
   );
