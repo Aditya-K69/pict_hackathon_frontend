@@ -12,7 +12,13 @@ import {
 import { HiOutlineClipboardCheck } from "react-icons/hi";
 import { MdOutlineGavel } from "react-icons/md";
 
+
 export default function ClaimSubmissionSuccess() {
+
+  const handleGoToDashboard = () => {
+   
+    window.location.href = "/user-dashboard";
+  };
   return (
     <div className="min-h-screen bg-[#f6f7f8] px-6 py-12">
       <div className="max-w-4xl mx-auto flex flex-col items-center gap-8">
@@ -137,7 +143,10 @@ export default function ClaimSubmissionSuccess() {
           <button className="px-6 py-3 rounded-lg bg-blue-600 text-white flex items-center gap-2 hover:bg-blue-700">
             <FiEye /> Track Claim Status
           </button>
-          <button className="px-6 py-3 rounded-lg bg-white border border-gray-300 text-black hover:bg-gray-100">
+        <button 
+            onClick={handleGoToDashboard}
+            className="flex-1 bg-gray-100 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors"
+          >
             Go to Dashboard
           </button>
         </div>

@@ -45,6 +45,14 @@ export default function Login() {
     }
   }
 
+  const handleCreateAccount = () => {
+    window.location.href = "/signup";
+  };
+
+  const handleForgotPin = () => {
+    window.location.href = "/forgotPin";
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#f6f7f8]">
       <div className="bg-white w-[450px] rounded-2xl shadow-lg p-6 mt-20">
@@ -92,15 +100,17 @@ export default function Login() {
                 className="border rounded-lg p-2"
               />
 
-              <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <label className="font-medium">Security PIN</label>
                 <button
                   type="button"
-                  className="text-blue-500 text-sm"
+                  onClick={handleForgotPin}
+                  className="text-blue-500 text-sm hover:text-blue-600"
                 >
                   Forgot PIN?
                 </button>
               </div>
+
 
               <input
                 type="password"
@@ -164,9 +174,10 @@ export default function Login() {
           <hr className="w-32" />
         </div>
 
-        <button
+          <button
           type="button"
-          className="w-full border rounded-lg p-2 mt-4 text-gray-600"
+          onClick={handleCreateAccount}
+          className="w-full border rounded-lg p-2 mt-4 text-gray-600 hover:bg-gray-50 transition-colors"
         >
           Create Account
         </button>
