@@ -47,6 +47,12 @@ export default function Signup() {
     try {
       await api.post(endpoint, payload);
       setSuccess(true);
+      
+   
+   // Redirect to login after 2 seconds
+   setTimeout(() => {
+     window.location.href = "/login";
+   }, 2000);
     } catch (err:any) {
       setError(
         err.response?.data?.message || "Registration failed"
@@ -167,9 +173,9 @@ export default function Signup() {
             <p className="text-red-500 text-sm mt-2">{error}</p>
           )}
 
-          {success && (
+         {success && (
             <p className="text-green-600 text-sm mt-2">
-              Account created successfully. You can log in now.
+              Account created successfully! Redirecting to login...
             </p>
           )}
 

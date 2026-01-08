@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ClaimReview from "./claimreview";
 
 interface UploadedFile {
   id: number;
@@ -31,8 +32,7 @@ export default function FileClaim() {
   };
 
   const handleContinue = (): void => {
-    alert("Claim submitted successfully!");
-    window.location.href = "/user-dashboard";
+    window.location.href = "/claimreview";
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>): void => {
