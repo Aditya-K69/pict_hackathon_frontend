@@ -19,6 +19,11 @@ export default function ClaimSubmissionSuccess() {
    
     window.location.href = "/user-dashboard";
   };
+
+  const handleGoToClaimTracking = () => {
+    window.location.href = "/claimtracking";
+  };
+  
   return (
     <div className="min-h-screen bg-[#f6f7f8] px-6 py-12">
       <div className="max-w-4xl mx-auto flex flex-col items-center gap-8">
@@ -140,7 +145,7 @@ export default function ClaimSubmissionSuccess() {
 
         {/* Action Buttons */}
         <div className="flex gap-4">
-          <button className="px-6 py-3 rounded-lg bg-blue-600 text-white flex items-center gap-2 hover:bg-blue-700">
+          <button onClick={handleGoToClaimTracking} className="px-6 py-3 rounded-lg bg-blue-600 text-white flex items-center gap-2 hover:bg-blue-700">
             <FiEye /> Track Claim Status
           </button>
         <button 
