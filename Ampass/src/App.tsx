@@ -1,17 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/login";
-import ClaimReview from "./pages/claimreview";
-import ClaimSubmissionSuccess from "./pages/claimsubmissionsuccess";
 
+import Login from "./pages/login";
 
 function App() {
   return (
     <Routes>
+      {/* Auth */}
       <Route path="/" element={<Login />} />
-      <Route path="/claimreview" element={<ClaimReview />} />
-       <Route path="/claimsubmissionsuccess" element={<ClaimSubmissionSuccess />} />
-
-
     </Routes>
   );
 }
