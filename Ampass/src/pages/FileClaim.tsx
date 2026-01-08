@@ -1,14 +1,15 @@
 import { useState } from "react";
-import ClaimReview from "./claimreview";
+import api from "../lib/api";
 
 interface UploadedFile {
-  id: number;
+  id: number;              // local UI id
+  serverId?: number;       // DB id from backend
   name: string;
   size: string;
   uploaded: string;
   type: string;
   uploading?: boolean;
-  progress?: number;
+  error?: boolean;
 }
 
 export default function FileClaim() {
@@ -17,11 +18,7 @@ export default function FileClaim() {
   const [policyNumber, setPolicyNumber] = useState<string>("");
   const [incidentDate, setIncidentDate] = useState<string>("");
   const [incidentDescription, setIncidentDescription] = useState<string>("");
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([
-    { id: 1, name: "Hospital_Bill_Oct24.pdf", size: "2.4 MB", uploaded: "2 mins ago", type: "pdf" },
-    { id: 2, name: "Car_Damage_Front.jpg", size: "4.1 MB", uploaded: "2 mins ago", type: "jpg" },
-    { id: 3, name: "Car_Damage_Side.png", size: "3.8 MB", uploaded: "2 mins ago", uploading: true, progress: 60, type: "png" }
-  ]);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
   const handleContinueToEvidence = (): void => {
     setStep(2);
@@ -35,20 +32,74 @@ export default function FileClaim() {
     window.location.href = "/claimreview";
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  // 🔴 REAL BACKEND UPLOAD
+  const handleFileUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     const files = Array.from(e.target.files || []);
-    const newFiles: UploadedFile[] = files.map((file, index) => ({
-      id: uploadedFiles.length + index + 1,
-      name: file.name,
-      size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
-      uploaded: "just now",
-      type: file.name.split('.').pop() || 'unknown'
-    }));
-    setUploadedFiles([...uploadedFiles, ...newFiles]);
+    if (!files.length) return;
+
+    for (const file of files) {
+      const tempId = Date.now() + Math.random();
+
+      // optimistic UI entry
+      setUploadedFiles(prev => [
+        ...prev,
+        {
+          id: tempId,
+          name: file.name,
+          size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
+          uploaded: "uploading...",
+          type: file.name.split(".").pop() || "unknown",
+          uploading: true
+        }
+      ]);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch("http://localhost:4000/users/upload", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`
+          },
+          body: formData
+        });
+
+        if (!res.ok) throw new Error("upload_failed");
+
+        const data = await res.json();
+        // { id, name, size, path }
+
+        setUploadedFiles(prev =>
+          prev.map(f =>
+            f.id === tempId
+              ? {
+                  ...f,
+                  uploading: false,
+                  uploaded: "just now",
+                  serverId: data.id
+                }
+              : f
+          )
+        );
+      } catch {
+        setUploadedFiles(prev =>
+          prev.map(f =>
+            f.id === tempId
+              ? { ...f, uploading: false, error: true }
+              : f
+          )
+        );
+      }
+    }
+
+    e.target.value = "";
   };
 
   const removeFile = (id: number): void => {
-    setUploadedFiles(uploadedFiles.filter(file => file.id !== id));
+    setUploadedFiles(prev => prev.filter(file => file.id !== id));
   };
 
   return (
@@ -290,26 +341,25 @@ export default function FileClaim() {
                               </div>
                               <div>
                                 <p className="font-medium text-sm text-gray-900">{file.name}</p>
-                                <p className="text-xs text-gray-500">{file.size} • Uploaded {file.uploaded}</p>
+                                <p className="text-xs text-gray-500">
+                                  {file.size} • {file.uploading ? (
+                                    <span className="text-blue-600">Uploading...</span>
+                                  ) : (
+                                    `Uploaded ${file.uploaded}`
+                                  )}
+                                </p>
+                                {file.error && (
+                                  <p className="text-xs text-red-600">Upload failed</p>
+                                )}
                               </div>
                             </div>
                             <button
                               onClick={() => removeFile(file.id)}
                               className="text-gray-400 hover:text-red-600"
                             >
-                              {file.uploading ? '🗑️' : '✕'}
+                              ✕
                             </button>
                           </div>
-                          {file.uploading && (
-                            <div className="mt-3">
-                              <div className="w-full bg-gray-200 rounded-full h-1">
-                                <div 
-                                  className="bg-blue-600 h-1 rounded-full transition-all"
-                                  style={{ width: `${file.progress}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>
