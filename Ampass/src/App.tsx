@@ -10,6 +10,7 @@ import ForgotPIN from "./pages/forgotPin";
 import VerifyOTP from "./pages/verifyOtp";
 import ClaimTracking from "./pages/claimtracking";
 import CompanyDashboard from "./pages/companyDashboard";
+import FileUpload from "./pages/FileUpload";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/claimsubmissionsuccess" element={<ClaimSubmissionSuccess />} />
       <Route path="/claimtracking" element={<ClaimTracking></ClaimTracking>}></Route>
       <Route path="/companyDashboard" element={<CompanyDashboard/>}></Route>
+      <Route path="/fileupload" element={<FileUpload/>}></Route>
     </Routes>
   );
 }
