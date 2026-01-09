@@ -101,10 +101,9 @@ const Dashboard = () => {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 border-2 border-white rounded-full"></div>
-            </div>
-            <h1 className="text-xl font-bold text-gray-900">InsureCorp Provider Portal</h1>
+        
+            <img src='claimit-logo-3.jpg' className='h-12 w-13'></img>
+            <h1 className="text-xl font-bold text-gray-900">Claimit</h1>
           </div>
           <div className="flex items-center space-x-4">
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
