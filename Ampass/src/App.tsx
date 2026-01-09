@@ -11,6 +11,7 @@ import VerifyOTP from "./pages/verifyOtp";
 import ClaimTracking from "./pages/claimtracking";
 import CompanyDashboard from "./pages/companyDashboard";
 import FileUpload from "./pages/FileUpload";
+import ClaimReviewDecision from "./pages/ClaimReviewDecision";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/user-dashboard" element={<Dashboard />} />
       <Route path="/FileClaim" element={<FileClaim />} />
       <Route path="/claimreview" element={<ClaimReview />} />
+      <Route path="/claim-review-decision" element={<ClaimReviewDecision />} />
       <Route path="/claimsubmissionsuccess" element={<ClaimSubmissionSuccess />} />
       <Route path="/claimtracking" element={<ClaimTracking></ClaimTracking>}></Route>
       <Route path="/companyDashboard" element={<CompanyDashboard/>}></Route>
