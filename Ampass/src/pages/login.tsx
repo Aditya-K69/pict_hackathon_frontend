@@ -34,8 +34,13 @@ export default function Login() {
       const res = await api.post(endpoint, payload);
       localStorage.setItem("access_token", res.data.access_token);
 
-      
-       window.location.href = "/user-dashboard";
+      if(accountType==="user"){
+        window.location.href = "/user-dashboard";
+      }
+      if(accountType==="company"){
+        window.location.href = "/companyDashboard"
+      }
+       
     } catch (err:any) {
       setError(
         err.response?.data?.message || "Login failed"

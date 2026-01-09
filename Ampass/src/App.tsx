@@ -9,6 +9,7 @@ import Signup from "./pages/signup";
 import ForgotPIN from "./pages/forgotPin";
 import VerifyOTP from "./pages/verifyOtp";
 import ClaimTracking from "./pages/claimtracking";
+import CompanyDashboard from "./pages/companyDashboard";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
       <Route path="/claimreview" element={<ClaimReview />} />
       <Route path="/claimsubmissionsuccess" element={<ClaimSubmissionSuccess />} />
       <Route path="/claimtracking" element={<ClaimTracking></ClaimTracking>}></Route>
-  
+      <Route path="/companyDashboard" element={<CompanyDashboard/>}></Route>
     </Routes>
   );
 }
