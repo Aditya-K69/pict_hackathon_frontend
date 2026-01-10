@@ -1,4 +1,5 @@
 import React from 'react';
+import { generateClaimAcknowledgmentPDF } from '../lib/pdfGenerator';
 
 // Types
 interface ClaimInfo {
@@ -86,7 +87,7 @@ const ClaimDetailsPage: React.FC = () => {
   };
 
   const handleDownloadAcknowledgment = () => {
-    alert('Downloading acknowledgment document');
+    generateClaimAcknowledgmentPDF(claimData);
   };
 
   const handleContactSupport = () => {
