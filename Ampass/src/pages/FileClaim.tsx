@@ -29,7 +29,7 @@ export default function FileClaim() {
   };
 
   const handleContinue = (): void => {
-    window.location.href = "/claimreview";
+    window.location.href = "/Processing";
   };
 
   // 🔴 REAL BACKEND UPLOAD
